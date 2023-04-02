@@ -1,0 +1,545 @@
+To create the comment management system, we will need to follow these steps:
+
+Setup CodeIgniter Framework
+Create a database for storing comments data
+Install and Configure Google Login API for CodeIgniter
+Create a Comment Model for accessing and manipulating comments data
+Create a Comment Controller for handling comment requests
+Create a Comment Controller for handling comment requests
+Create a Comment View for displaying comments data
+Create a Login View for allowing users to log in
+Integrate Google Login API into the Login View
+Create a Comment Form View for allowing users to submit comments
+Create a route for handling comment requests
+Implement the Comment Management System
+
+
+
+Here's a step-by-step guide to help you build the comment management system using CodeIgniter:
+Setup CodeIgniter Framework
+To setup CodeIgniter, you need to download the framework from the official website and install it on your server. Once installed, you can create a new project by following these steps:
+
+Open your terminal or command prompt and navigate to the directory where you want to create your project.
+Run the following command to create a new CodeIgniter project:
+composer create-project codeigniter4/appstarter myproject
+This will create a new CodeIgniter project named 'myproject' in the current directory.
+Create a database for storing comments data
+Next, you need to create a database to store the comments data. You can use a tool like phpMyAdmin to create the database and the necessary tables. Here's an example SQL code for creating the comments table:
+CREATE TABLE comments (
+  id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  category VARCHAR(50) NOT NULL,
+  username VARCHAR(50) NOT NULL,
+  comment TEXT NOT NULL,
+  status ENUM('new', 'live', 'draft') NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+Install and Configure Google Login API for CodeIgniter
+To install the Google Login API for CodeIgniter, you need to follow these steps:
+
+Download the latest version of the Google API Client Library for PHP from the official GitHub repository.
+Extract the downloaded archive and copy the 'google' folder to the 'app/ThirdParty' directory of your CodeIgniter project.
+Open the 'app/Config/Constants.php' file and add the following line:
+define('GOOGLE_CLIENT_ID', 'YOUR_GOOGLE_CLIENT_ID');
+
+
+Replace 'YOUR_GOOGLE_CLIENT_ID' with your actual Google Client ID.
+Open the 'app/Controllers/BaseController.php' file and add the following lines at the top:
+protected function getGoogleClient()
+{
+    $client = new Google_Client();
+    $client->setClientId(GOOGLE_CLIENT_ID);
+    $client->setClientSecret(GOOGLE_CLIENT_SECRET);
+    $client->setRedirectUri(base_url('login/google/callback'));
+    $client->addScope(Google_Service_Oauth2::USERINFO_EMAIL);
+    $client->addScope(Google_Service_Oauth2::USERINFO_PROFILE);
+    return $client;
+}
+
+protected function getGoogleService()
+{
+    $client = $this->getGoogleClient();
+    $service = new Google_Service_Oauth2($client);
+    return $service;
+}
+
+
+Install and Configure Google Login API for CodeIgniter (continued)
+Replace 'GOOGLE_CLIENT_SECRET' with your actual Google Client Secret.
+These methods will create a new instance of the Google Client and Google Service classes, and set the necessary parameters.
+Create a Comment Model for accessing and manipulating comments data
+To create a Comment Model, you need to follow these steps:
+
+Open your terminal or command prompt and navigate to the 'app/Models' directory of your CodeIgniter project.
+Run the following command to create a new Comment Model:
+php spark make:model CommentModel
+
+
+<?php namespace App\Models;
+
+use CodeIgniter\Model;
+
+class CommentModel extends Model
+{
+    protected $table = 'comments';
+    protected $allowedFields = ['category', 'username', 'comment', 'status'];
+}
+
+This code defines a new Comment Model class that extends the CodeIgniter Model class, and sets the necessary properties for accessing and manipulating comments data.
+
+
+Create a Comment Controller for handling comment requests
+To create a Comment Controller, you need to follow these steps:
+
+Open your terminal or command prompt and navigate to the 'app/Controllers' directory of your CodeIgniter project.
+Run the following command to create a new Comment Controller:
+php spark make:controller CommentController
+
+This will create a new Comment Controller named 'CommentController.php' in the 'app/Controllers' directory.
+Open the 'CommentController.php' file and add the following code:
+<?php namespace App\Controllers;
+
+use CodeIgniter\Controller;
+use App\Models\CommentModel;
+
+class CommentController extends Controller
+{
+    public function index()
+    {
+        // TODO: Implement index method
+    }
+
+    public function create()
+    {
+        // TODO: Implement create method
+    }
+
+    public function store()
+    {
+        // TODO: Implement store method
+    }
+
+    public function edit($id)
+    {
+        // TODO: Implement edit method
+    }
+
+    public function update($id)
+    {
+        // TODO: Implement update method
+    }
+
+    public function delete($id)
+    {
+        // TODO: Implement delete method
+    }
+}
+
+This code defines a new Comment Controller class that extends the CodeIgniter Controller class, and defines the necessary methods for handling comment requests.
+Create a Comment View for displaying comments data
+To create a Comment View, you need to follow these steps:
+
+Open your text editor and create a new file named 'comments.php' in the 'app/Views' directory of your CodeIgniter project.
+Add the following code to the 'comments.php' file:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comments</title>
+</head>
+<body>
+    <h1>Comments</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Username</th>
+                <th>Comment</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($comments as $comment): ?>
+                <tr>
+                    <td><?= $comment['category'] ?></td>
+                    <td><?= $comment['username'] ?></td>
+                    <td><?= $comment['comment'] ?></td>
+                    <td><?= $comment['status'] ?></td>
+                    <td>
+                        <a href="<?= base_url('comments/edit/' . $comment
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comments</title>
+</head>
+<body>
+    <h1>Comments</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Username</th>
+                <th>Comment</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($comments as $comment): ?>
+                <tr>
+                    <td><?= $comment['category'] ?></td>
+                    <td><?= $comment['username'] ?></td>
+                    <td><?= $comment['comment'] ?></td>
+                    <td><?= $comment['status'] ?></td>
+                    <td>
+                        <a href="<?= base_url('comments/edit/' . $comment
+                        
+                        
+                        
+Implement the index method in the Comment Controller
+To implement the index method in the Comment Controller, you need to follow these steps:
+
+Open the 'CommentController.php' file and add the following code to the 'index' method:
+public function index()
+{
+    $model = new CommentModel();
+    $data['comments'] = $model->findAll();
+    echo view('comments', $data);
+}
+
+This code creates a new instance of the Comment Model, retrieves all comments data using the 'findAll' method, and passes the data to the Comment View for display.
+Implement the create method in the Comment Controller
+To implement the create method in the Comment Controller, you need to follow these steps:
+
+Open the 'CommentController.php' file and add the following code to the 'create' method:
+public function create()
+{
+    helper('form');
+    echo view('create_comment');
+}
+
+This code loads the CodeIgniter Form Helper, and passes the control to the 'create_comment' view for displaying the comment creation form.
+Implement the store method in the Comment Controller
+To implement the store method in the Comment Controller, you need to follow these steps:
+
+Open the 'CommentController.php' file and add the following code to the 'store' method:
+public function store()
+{
+    helper('form');
+    $model = new CommentModel();
+    $data = [
+        'category' => $this->request->getVar('category'),
+        'username' => $this->request->getVar('username'),
+        'comment' => $this->request->getVar('comment'),
+        'status' => 'new'
+    ];
+    $model->insert($data);
+    return redirect()->to('/comments');
+}
+
+This code loads the CodeIgniter Form Helper, creates a new instance of the Comment Model, retrieves comment data from the form using the 'request->getVar' method, sets the 'status' field to 'new', inserts the data into the database using the 'insert' method, and redirects the user to the Comments View.
+Implement the edit method in the Comment Controller
+To implement the edit method in the Comment Controller, you need to follow these steps:
+
+Open the 'CommentController.php' file and add the following code to the 'edit' method:
+
+public function edit($id)
+{
+    helper('form');
+    $model = new CommentModel();
+    $data['comment'] = $model->find($id);
+    echo view('edit_comment', $data);
+}
+
+This code loads the CodeIgniter Form Helper, creates a new instance of the Comment Model, retrieves comment data using the 'find' method, and passes the data to the 'edit_comment' view for displaying the comment edit form.
+Implement the update method in the Comment Controller
+To implement the update method in the Comment Controller, you need to follow these steps:
+
+Open the 'CommentController.php' file and add the following code to the 'update' method:
+public function update($id)
+{
+    helper('form');
+    $model = new CommentModel();
+    $data = [
+        'category' => $this->request->getVar('category'),
+        'username' => $this->request->getVar('username'),
+        'comment' => $this->request->getVar('comment'),
+        'status' => $this->request->getVar('status')
+    ];
+    $model->update($id, $data);
+    return redirect()->to('/comments');
+}
+
+
+Implement Comment Controller methods for handling comment requests
+Now that you have created the Comment Controller and defined its methods, it's time to implement these methods to handle comment requests. Here's what each method should do:
+
+index(): This method should fetch all comments data from the database using the Comment Model and pass it to the Comment View for display.
+create(): This method should display a form for creating new comments.
+store(): This method should handle the form submission for creating new comments, validate the input data, and store the new comment in the database using the Comment Model.
+edit($id): This method should fetch the comment data with the given ID from the database using the Comment Model and pass it to a form for editing.
+update($id): This method should handle the form submission for editing comments, validate the input data, and update the comment data in the database using the Comment Model.
+delete($id): This method should delete the comment data with the given ID from the database using the Comment Model.
+Here's how to implement these methods in the Comment Controller:
+<?php namespace App\Controllers;
+
+use CodeIgniter\Controller;
+use App\Models\CommentModel;
+
+class CommentController extends Controller
+{
+    public function index()
+    {
+        $model = new CommentModel();
+        $data['comments'] = $model->findAll();
+        return view('comments', $data);
+    }
+
+    public function create()
+    {
+        return view('create_comment');
+    }
+
+    public function store()
+    {
+        helper(['form', 'url']);
+        $model = new CommentModel();
+        $data = [
+            'category' => $this->request->getVar('category'),
+            'username' => $this->request->getVar('username'),
+            'comment' => $this->request->getVar('comment'),
+            'status' => 'new'
+        ];
+        $model->insert($data);
+        return redirect()->to(base_url('comments'));
+    }
+
+    public function edit($id)
+    {
+        $model = new CommentModel();
+        $data['comment'] = $model->find($id);
+        return view('edit_comment', $data);
+    }
+
+    public function update($id)
+    {
+        helper(['form', 'url']);
+        $model = new CommentModel();
+        $data = [
+            'category' => $this->request->getVar('category'),
+            'username' => $this->request->getVar('username'),
+            'comment' => $this->request->getVar('comment'),
+            'status' => $this->request->getVar('status')
+        ];
+        $model->update($id, $data);
+        return redirect()->to(base_url('comments'));
+    }
+
+    public function delete($id)
+    {
+        $model = new CommentModel();
+        $model->delete($id);
+        return redirect()->to(base_url('comments'));
+    }
+}
+
+Create a Comment Routes for accessing Comment Controller methods
+To create Comment Routes, you need to follow these steps:
+
+Open your text editor and navigate to the 'app/Config/Routes.php' file of your CodeIgniter project.
+Add the following code to the 'Routes.php' file:
+$routes->get('comments', 'CommentController::index');
+$routes->get('comments/create', 'CommentController::create');
+$routes->post('comments/store', 'CommentController::store');
+$routes->get('comments/edit/(:num)', 'CommentController::edit/$1');
+$routes->post('comments/update/(:num)', 'CommentController::update/$1');
+$routes->get('comments/delete/(:num)', 'CommentController::delete/$1');
+
+Implement Comment Controller Methods
+Now it's time to implement the methods of the Comment Controller that we defined earlier.
+
+In the 'index' method, you need to fetch all the comments data from the database and pass it to the Comment View for displaying.
+public function index()
+{
+    $commentModel = new CommentModel();
+    $data['comments'] = $commentModel->findAll();
+    return view('comments', $data);
+}
+
+In the 'create' method, you need to display a form for creating a new comment.
+public function create()
+{
+    return view('comment_create');
+}
+
+In the 'store' method, you need to validate the form data, insert the new comment into the database, and redirect back to the Comment View.
+
+public function store()
+{
+    helper(['form']);
+    $rules = [        'category' => 'required',        'comment' => 'required'    ];
+    if ($this->validate($rules)) {
+        $commentModel = new CommentModel();
+        $data = [            'category' => $this->request->getVar('category'),            'username' => $this->session->get('username'),            'comment' => $this->request->getVar('comment'),            'status' => 'new'        ];
+        $commentModel->insert($data);
+        return redirect()->to('/comments')->with('success', 'Comment created successfully.');
+    } else {
+        return redirect()->back()->withInput()->with('error', 'Validation error occurred.');
+    }
+}
+
+
+In the 'edit' method, you need to fetch the comment data from the database and display a form for editing the comment.
+public function edit($id)
+{
+    $commentModel = new CommentModel();
+    $data['comment'] = $commentModel->find($id);
+    return view('comment_edit', $data);
+}
+
+In the 'update' method, you need to validate the form data, update the comment data in the database, and redirect back to the Comment View.
+public function update($id)
+{
+    helper(['form']);
+    $rules = [
+        'category' => 'required',
+        'comment' => 'required'
+    ];
+    if ($this->validate($rules)) {
+        $commentModel = new CommentModel();
+        $data = [
+            'category' => $this->request->getVar('category'),
+            'comment' => $this->request->getVar('comment'),
+            'status' => $this->request->getVar('status')
+        ];
+        $commentModel->update($id, $data);
+        return redirect()->to('/comments')->with('success', 'Comment updated successfully.');
+    } else {
+        return redirect()->back()->withInput()->with('error', 'Validation error occurred.');
+    }
+}
+
+In the 'delete' method, you need to delete the comment data from the database and redirect back to the Comment View.
+public function delete($id)
+{
+    $commentModel = new CommentModel();
+    $commentModel->delete($id);
+    return redirect()->to('/comments')->with('success', 'Comment deleted successfully.');
+}
+
+
+Create Comment Views for displaying and creating/editing comments
+To create Comment Views, you need to follow these steps:
+
+Open your text editor and create a new file named 'comment_create.php' in the 'app/Views' directory of your CodeIgniter project.
+Add the following code to the 'comment_create.php' file:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comments</title>
+</head>
+<body>
+    <h1>Comments</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Username</th>
+                <th>Comment</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($comments as $comment): ?>
+                <tr>
+                    <td><?= $comment['category'] ?></td>
+                    <td><?= $comment['username'] ?></td>
+                    <td><?= $comment['comment'] ?></td>
+                    <td><?= $comment['status'] ?></td>
+                    <td>
+                        <a href="<?= base_url('comments/edit/' . $comment
+
+Implement the Comment Controller methods
+Now that you have created the Comment Controller, you need to implement its methods for handling comment requests. Here are the details for each method:
+
+index(): This method retrieves all comments from the database and displays them in the Comment View.
+public function index()
+{
+    $commentModel = new CommentModel();
+    $data['comments'] = $commentModel->findAll();
+    return view('comments', $data);
+}
+
+create(): This method displays a form for creating a new comment
+public function create()
+{
+    return view('create_comment');
+}
+
+
+store(): This method validates and stores a new comment in the database.
+public function store()
+{
+    $request = service('request');
+    $commentModel = new CommentModel();
+    $data = [
+        'category' => $request->getPost('category'),
+        'username' => session()->get('username'),
+        'comment' => $request->getPost('comment'),
+        'status' => 'new'
+    ];
+    $commentModel->save($data);
+    return redirect()->to('comments');
+}
+
+
+edit(): This method displays a form for editing an existing comment.
+public function edit($id)
+{
+    $commentModel = new CommentModel();
+    $data['comment'] = $commentModel->find($id);
+    return view('edit_comment', $data);
+}
+
+
+update(): This method validates and updates an existing comment in the database.
+public function update($id)
+{
+    $request = service('request');
+    $commentModel = new CommentModel();
+    $data = [
+        'category' => $request->getPost('category'),
+        'comment' => $request->getPost('comment')
+    ];
+    $commentModel->update($id, $data);
+    return redirect()->to('comments');
+}
+
+
+delete(): This method deletes an existing comment from the database.
+public function delete($id)
+{
+    $commentModel = new CommentModel();
+    $commentModel->delete($id);
+    return redirect()->to('comments');
+}
+
+Implement the Comment Views
+Now that you have created the Comment Views, you need to implement them for displaying and submitting comment data. Here are the details for each View:
+
+comments.php: This View displays a table of all comments in the database, with links to edit and delete each comment.
+
+create_comment.php: This View displays a form for creating a new comment, with fields for category and comment text.
+
+edit_comment.php: This View displays a form for editing an existing comment, with fields for category and comment text.
+
+Test the Comment Management System
+You can now test the Comment Management System by logging in with Google Login API, creating and submitting new comments, editing existing comments, and deleting comments. All comment data will be stored in the database and displayed in the Comment View.
+
+
+
